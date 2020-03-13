@@ -1,0 +1,60 @@
+We only checked the source code working on macOS Mojave, MacBook pro. 
+This source code was confirmed to be compiled by gFortran.
+It requires the codes of "kind.f90", "sparse.f90", "sparse2.f" and "sparssub.f" by Misztal as well as the lapack library. 
+All codes were put into the same directory, and inputting the below code on your terminal;
+
+> gfortran -c kind.f90
+> gfortran -c sparssub.f
+> gfortran -c sparse2.f
+> gfortran -c sparse.f90
+> gfortran -c const_A_inv.f90
+> gfortran -c gamma.f90
+> gfortran -c random.f90
+> gfortran -c main_ped.f90
+> gfortran *.o -llapack -lblas
+
+
+A data file consists that each line is each animal, and data should be split "space," "tab," "comma" into each column.
+
+Pedigree file has to be written "Individual", "SIre", "Dam" in order.
+The file also has to be ordered from the older generation to the younger. 
+
+In the Genotype file, the first column is an individual ID that corresponds to the data file and the pedigree file.
+The genotypes of each animal start from the second column to so on, which is written as 0 (Homozygosity), 1 (Heterozygosity), 2 (Another type of homozygosity).
+
+The parameter file cannot be changed in order
+1. data file name
+2. pedigree file name, if the pedigree isn't used, please write "ped"
+3. genotype file name, if the genotype isn't used, please write "geno" 
+4. number of SNP, if the genotype isn't used, please write "10" 
+4. column number of phenotype in the data
+5. number of effect
+6 to 6 + 2*(number of the effect)
+6 + 2*(number of the effect)+1. iteration number
+
+CATION!
+The code generates and writes down all samples, including all effects, on the file! Please take care when you use a large number of the effect because the code needs a considerable amount of your storage (more than 10Gb). 
+
+Successive two rows from the sixth column are written about effect type (fixed or random), etc. The program can handle nine effect type; fixed main effect, fixed covariate, random main effect (off-diagonal of variance matrix is 0), random additive effect with pedigree or genomic information, random genomic dominance effect, random genomic additive*additive effect with NOIA, random genomic additive*dominace effect with NOIA, random domince*dominance effect with NOIA. 
+
+For example "fixed main effect," 
+
+column position, "main", "fixed", estimation method (gibbs, HMC, RMHMC), where RMHMC is a Riemannian manifold HMC method.
+the constant variance of the effect
+
+example
+    2 main fixed gibbs
+    10000    ! , where the effect has 10000 variance 
+
+"additive genetic effect from pedigree."
+    column position, "ped", "random", method for estimating "effect" (gibbs, HMC, RMHMC)
+    degree of belief, scale parameter, method for estimating "variance" (gibbs, HMC, RMHMC)
+
+example
+    2 add random gibbs
+    0 0 HMC    ! DB, scale, method
+
+"additive genomic effect" : effect type is "add"
+"dominace genomic effect" : effect type is "dom"
+"additive*additive genomic effect" : effect type is "add_add"
+"additive*dominace genomic effect" : effect type is "add_dom"

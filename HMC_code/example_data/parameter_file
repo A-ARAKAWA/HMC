@@ -1,0 +1,18 @@
+data	! data file name
+ped	! Pedigree file name
+geno	! Genome file name
+100	!number of SNP
+3	!Trait position
+3	!Effect number
+2 main fixed gibbs	!position, effect, distribution, method
+10000	! In case of "fixed" or "cov", the value means "var_b"
+1 ped random HMC 	!position, effect, distribution, method
+0 0 HMC	! DB, scale, method
+1 add random HMC 	!position, effect, distribution, method
+0 0 HMC	! DB, scale, method
+0 0 HMC	! DB, scale, method for residual variance
+10000	! iteration
+
+
+
+add, ped, dom, add_add, add_dom, dom_dom

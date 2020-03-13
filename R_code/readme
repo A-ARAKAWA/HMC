@@ -1,0 +1,6 @@
+data file order
+ID, 1, phenotype, true breeding value
+
+pedigree file
+ID, Sire_ID, Dam_ID
+
